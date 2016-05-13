@@ -27,14 +27,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    [self.navigationController popToViewController:[[YNCompassCalibration alloc] init] animated:YES];
+    //[self.navigationController popToViewController:[[YNCompassCalibration alloc] init] animated:YES];
     
-    self.connectionTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop]addTimer:self.connectionTimer forMode:NSDefaultRunLoopMode];
     
     [self.view addSubview:self.tableView];
     
-    
+    self.connectionTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop]addTimer:self.connectionTimer forMode:NSDefaultRunLoopMode];
 }
 
 
@@ -42,7 +41,7 @@
     
     if (!_tableView) {
         
-        _tableView = [[PDLReminderTableView alloc] initWithFrame:CGRectMake(KCurrentView_width_(self.view)*3/8, (Iphone?44:66), KCurrentView_width_(self.view)/4, 0)];
+        _tableView = [[PDLReminderTableView alloc] initWithFrame:CGRectMake(KCurrentView_width_(self.view)*3/8, (Iphone?44:66) + 50, KCurrentView_width_(self.view)/4, 0)];
     }
     return _tableView;
 }
@@ -52,6 +51,7 @@
     
     NSLog(@"%@",[[NSDate date] description]);
     
+    int second = [[NSCalendar currentCalendar] component:kCFCalendarUnitSecond fromDate:[NSDate date]];
     [self.tableView showMessage:[[[NSDate date] description] substringFromIndex:11]];
     
 }
@@ -84,7 +84,7 @@
         self.delegate           = self;
         self.dataSource         = self;
         self.tableFooterView    = [UIView new];
-        self.backgroundColor    = [UIColor clearColor];
+        self.backgroundColor    = [UIColor blackColor];
         self.layer.cornerRadius = 4;
         self.clipsToBounds = YES;
     }
@@ -116,7 +116,7 @@
     cell.detailTextLabel.textAlignment = NSTextAlignmentCenter;
     cell.detailTextLabel.numberOfLines = 0;
     //cell.textLabel.textColor = [UIColor whiteColor];
-    cell.backgroundColor = [UIColor redColor];
+    cell.backgroundColor = [UIColor lightGrayColor];
     
     return cell;
 }
@@ -148,7 +148,7 @@
     
     [messages addObject:msg];
     
-    _timer = [NSTimer scheduledTimerWithTimeInterval:(messages.count) * 3 target:self selector:@selector(deleteIndexPath:) userInfo:nil repeats:NO];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:(messages.count) * 3 target:self selector:@selector(deleteIndexPath:) userInfo:nil repeats:YES];
     
     CGRect rect = self.frame;
     rect.size.height = (messages.count) * KPDL_label_height_less;
@@ -161,30 +161,15 @@
     
     if (ifDelete) {
         
-        NSLog(@"时间差  %f",[endDate timeIntervalSinceDate:startDate]);
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([endDate timeIntervalSinceDate:startDate] * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            
-            if ([endDate timeIntervalSinceDate:startDate] >= 3) {
-                
-                [self deleteRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:0 inSection:0],nil]
-                            withRowAnimation:UITableViewRowAnimationBottom];
-                endDate = nil;
-            }
-        });
+        [self deleteRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:0 inSection:0],nil]
+                    withRowAnimation:UITableViewRowAnimationBottom];
         
     }else{
         
-        startDate = [NSDate date];
-        
-        if (!endDate) {
-            
-            NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:MAX(0,messages.count-1) inSection:0];
-            [self beginUpdates];
-            [self insertRowsAtIndexPaths:[NSArray arrayWithObjects:newIndexPath, nil] withRowAnimation:UITableViewRowAnimationTop];
-            [self endUpdates];
-        }
-        endDate = [NSDate date];
+        NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:MAX(0,messages.count-1) inSection:0];
+        [self beginUpdates];
+        [self insertRowsAtIndexPaths:[NSArray arrayWithObjects:newIndexPath, nil] withRowAnimation:UITableViewRowAnimationTop];
+        [self endUpdates];
     }
 }
 
