@@ -16,6 +16,10 @@
 		FA4BB8591CE192EF0068D867 /* CompassCalibrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB8581CE192EF0068D867 /* CompassCalibrationTests.m */; };
 		FA4BB8641CE192EF0068D867 /* CompassCalibrationUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB8631CE192EF0068D867 /* CompassCalibrationUITests.m */; };
 		FA4BB8731CE193320068D867 /* YNCompassCalibration.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4BB8721CE193320068D867 /* YNCompassCalibration.m */; };
+		FA69F4E51CE970DF00B4F6F8 /* cancle_pressed@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA69F4E11CE970DF00B4F6F8 /* cancle_pressed@3x.png */; };
+		FA69F4E61CE970DF00B4F6F8 /* cancle@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA69F4E21CE970DF00B4F6F8 /* cancle@3x.png */; };
+		FA69F4E71CE970DF00B4F6F8 /* circle@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA69F4E31CE970DF00B4F6F8 /* circle@3x.png */; };
+		FA69F4E81CE970DF00B4F6F8 /* spot@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA69F4E41CE970DF00B4F6F8 /* spot@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +58,10 @@
 		FA4BB8651CE192EF0068D867 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA4BB8711CE193320068D867 /* YNCompassCalibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNCompassCalibration.h; sourceTree = "<group>"; };
 		FA4BB8721CE193320068D867 /* YNCompassCalibration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNCompassCalibration.m; sourceTree = "<group>"; };
+		FA69F4E11CE970DF00B4F6F8 /* cancle_pressed@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancle_pressed@3x.png"; sourceTree = "<group>"; };
+		FA69F4E21CE970DF00B4F6F8 /* cancle@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancle@3x.png"; sourceTree = "<group>"; };
+		FA69F4E31CE970DF00B4F6F8 /* circle@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle@3x.png"; sourceTree = "<group>"; };
+		FA69F4E41CE970DF00B4F6F8 /* spot@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spot@3x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +112,10 @@
 		FA4BB83D1CE192EF0068D867 /* CompassCalibration */ = {
 			isa = PBXGroup;
 			children = (
+				FA69F4E11CE970DF00B4F6F8 /* cancle_pressed@3x.png */,
+				FA69F4E21CE970DF00B4F6F8 /* cancle@3x.png */,
+				FA69F4E31CE970DF00B4F6F8 /* circle@3x.png */,
+				FA69F4E41CE970DF00B4F6F8 /* spot@3x.png */,
 				FA4BB8411CE192EF0068D867 /* AppDelegate.h */,
 				FA4BB8421CE192EF0068D867 /* AppDelegate.m */,
 				FA4BB8441CE192EF0068D867 /* ViewController.h */,
@@ -248,8 +260,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA69F4E81CE970DF00B4F6F8 /* spot@3x.png in Resources */,
 				FA4BB84E1CE192EF0068D867 /* LaunchScreen.storyboard in Resources */,
+				FA69F4E71CE970DF00B4F6F8 /* circle@3x.png in Resources */,
 				FA4BB84B1CE192EF0068D867 /* Assets.xcassets in Resources */,
+				FA69F4E51CE970DF00B4F6F8 /* cancle_pressed@3x.png in Resources */,
+				FA69F4E61CE970DF00B4F6F8 /* cancle@3x.png in Resources */,
 				FA4BB8491CE192EF0068D867 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,6 +438,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = CompassCalibration/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = proDrone.CompassCalibration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -433,6 +450,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = CompassCalibration/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = proDrone.CompassCalibration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -504,6 +522,7 @@
 				FA4BB86A1CE192EF0068D867 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FA4BB86B1CE192EF0068D867 /* Build configuration list for PBXNativeTarget "CompassCalibrationTests" */ = {
 			isa = XCConfigurationList;
@@ -512,6 +531,7 @@
 				FA4BB86D1CE192EF0068D867 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FA4BB86E1CE192EF0068D867 /* Build configuration list for PBXNativeTarget "CompassCalibrationUITests" */ = {
 			isa = XCConfigurationList;
@@ -520,6 +540,7 @@
 				FA4BB8701CE192EF0068D867 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

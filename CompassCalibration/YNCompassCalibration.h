@@ -9,8 +9,15 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface YNCompassCalibration : UIViewController<CLLocationManagerDelegate>
+typedef void (^YNCalibrationSuccess) (BOOL success);
+
+@interface YNCompassCalibration : UIView<CLLocationManagerDelegate>
 
 @property (nonatomic, retain) CLLocationManager *locationManager;
+@property (nonatomic, strong) UIImageView   *compass;
+@property (nonatomic, strong) UIImageView   *ball;
+
+@property (nonatomic, copy)YNCalibrationSuccess calibration;
+- (id)initWithFrame:(CGRect)frame;
 
 @end

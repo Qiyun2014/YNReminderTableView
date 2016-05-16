@@ -23,3 +23,13 @@
 - (void)showMessage:(NSString *)msg/* complete:(void (^) (BOOL finished))completed */;
 
 @end
+
+
+
+@interface PDLReminderView : UIImageView
+
+- (instancetype)initWithFrame:(CGRect)frame;
+
+- (void)showMessage:(NSString *)msg;
+
+@end

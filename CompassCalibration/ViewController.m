@@ -13,6 +13,9 @@
 
 @property (nonatomic, retain) NSTimer *connectionTimer;
 @property (nonatomic, strong) PDLReminderTableView  *tableView;                 /*  toast提示         */
+@property (nonatomic, strong) PDLReminderView *reminderView;
+
+@property (nonatomic, strong) YNCompassCalibration *compassView;
 
 @end
 
@@ -27,21 +30,56 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    //[self.navigationController popToViewController:[[YNCompassCalibration alloc] init] animated:YES];
     
+    //[self test];
+
+    [self.view addSubview:self.compassView];
+}
+
+- (YNCompassCalibration *)compassView{
     
-    [self.view addSubview:self.tableView];
+    if (!_compassView) {
+        
+        _compassView = [[YNCompassCalibration alloc] initWithFrame:self.view.bounds];
+        _compassView.backgroundColor = [UIColor lightGrayColor];
+        __weak typeof(_compassView) compass = _compassView;
+        
+        /*校磁成功*/
+        _compassView.calibration = ^(BOOL success){
+          
+            if (success)   [compass removeFromSuperview];
+        };
+    }
+    return _compassView;
+}
+
+- (void)test{
+    
+    [self.view addSubview:self.reminderView];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(20 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        [self.connectionTimer invalidate];
+    });
     
     self.connectionTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop]addTimer:self.connectionTimer forMode:NSDefaultRunLoopMode];
 }
 
+- (PDLReminderView *)reminderView{
+    
+    if (!_reminderView) {
+        
+        _reminderView = [[PDLReminderView alloc] initWithFrame:CGRectMake(KCurrentView_width_(self.view)*3/8, (Iphone?44:66) + 50, KCurrentView_width_(self.view)/4, 0)];
+    }
+    return _reminderView;
+}
 
 - (PDLReminderTableView *)tableView{
     
     if (!_tableView) {
         
-        _tableView = [[PDLReminderTableView alloc] initWithFrame:CGRectMake(KCurrentView_width_(self.view)*3/8, (Iphone?44:66) + 50, KCurrentView_width_(self.view)/4, 0)];
+        _tableView = [[PDLReminderTableView alloc] initWithFrame:CGRectMake(KCurrentView_width_(self.view)*4, (Iphone?44:66) + 50, KCurrentView_width_(self.view)/2, 0)];
     }
     return _tableView;
 }
@@ -51,9 +89,8 @@
     
     NSLog(@"%@",[[NSDate date] description]);
     
-    int second = [[NSCalendar currentCalendar] component:kCFCalendarUnitSecond fromDate:[NSDate date]];
-    [self.tableView showMessage:[[[NSDate date] description] substringFromIndex:11]];
-    
+    //int second = [[NSCalendar currentCalendar] component:kCFCalendarUnitSecond fromDate:[NSDate date]];
+    [self.reminderView showMessage:[[[NSDate date] description] substringFromIndex:11]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -179,4 +216,106 @@
     _timer = nil;
 }
 
+
 @end
+
+
+
+@implementation PDLReminderView{
+    
+    NSMutableArray  *messages, *views;
+    NSTimer *_timer;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame{
+    
+    if (self = [super initWithFrame:frame]) {
+        
+        messages = [[NSMutableArray alloc] init];
+        views = [NSMutableArray array];
+        
+        self.backgroundColor    = [UIColor blackColor];
+        self.layer.cornerRadius = 4;
+        self.clipsToBounds = YES;
+        
+        _timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(removeReminderLastCell) userInfo:nil repeats:YES];
+    }
+    return self;
+}
+
+- (void)showMessage:(NSString *)msg{
+    
+    if (msg && msg.length) {
+        
+        [messages addObject:msg];
+        
+        [self addSubview:[self addReminderImageViewCell:MAX(0, messages.count - 1)]];
+    }
+}
+
+- (UIView *)addReminderImageViewCell:(NSInteger)index{
+    
+    CGRect rect = self.frame;
+    rect.size.height += 40;
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds), 40)];
+    view.backgroundColor = [UIColor clearColor];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectInset(view.frame, 0, 0)];
+    label.text = messages.lastObject;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor whiteColor];
+    
+    [UIView animateWithDuration:0.15 animations:^{
+        
+        self.frame = rect;
+        [views enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+           
+            UIView *view = (UIView *)obj;
+            CGRect rect = view.frame;
+            rect.origin.y += 40;
+            view.frame = rect;
+        }];
+        
+    } completion:^(BOOL finished) {
+        
+        [view addSubview:label];
+        [views addObject:view];
+        
+        [_timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:2.8]];
+    }];
+    
+    return view;
+}
+
+- (void)removeReminderLastCell{
+    
+    if (messages.count >= 1 && views.count >= 1){
+        
+        CGRect rect = self.frame;
+        rect.size.height -= 40;
+        
+        [UIView animateWithDuration:0.15 animations:^{
+            
+            self.frame = rect;
+            
+        } completion:^(BOOL finished) {
+            
+            UIView *view = views.firstObject;
+            [view removeFromSuperview];
+        }];
+        
+    }else [_timer invalidate];
+}
+
+- (void)dealloc{
+    
+    _timer = nil;
+}
+
+@end
+
+
+
+
+
